@@ -1,0 +1,35 @@
+{% extends 'core\base.html' %}
+{% block title %}Cat Breeds{% endblock title %}
+
+{% block content %}
+<div class="container" style="height: 90dvh;">
+    <img src="{{ cat.cat_picture.url }}" alt="{{ cat.breed }} Picture" style="height: 500px; width: 1300px; object-fit:scale-down; background-color: chocolate;">
+    <h1>The {{ cat.breed }}</h1>
+    <p style="font-size: larger;"><strong>Description: </strong>{{ cat.description }}</p>
+    <p><strong>Traits: </strong>{{ cat.traits }}</p>
+    <p><strong>Height: </strong>{{ cat.height }}</p>
+    <p><strong>Weight: </strong>{{ cat.weight }}</p>
+    <p><strong>Population: </strong>{{ cat.population }}</p>
+</div>
+<div class="container">
+    <div class="row row-cols-4 d-flex justify-content-center">
+                {% for cat in others %} 
+                <div id="{[ cat.id ]}" class="col">
+                    <div class="card mb-3" style="max-width: 1140px;">
+                        <div class="row g-0">
+                            <div class="card-img-top">
+                                <img src="{{ cat.cat_picture.url }}" alt="{{ cat.breed }} Picture" style="height: 305px; width: 305px; object-fit: cover;">
+                            </div>
+                                <div class="card-body">  
+                                    <div id="{{ cat.id }}">
+                                        <a href="{% url 'cat_detail' cat.id %}" style="text-decoration: none; color: black;"><h4 class="card-title">{{ cat.breed|truncatechars:20 }}</h4></a>
+                                        <p class="card-text">Description: {{ cat.description|truncatechars:20 }}</p>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+    </div>
+</div>
+{% endblock %}

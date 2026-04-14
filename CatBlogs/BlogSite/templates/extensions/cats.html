@@ -1,0 +1,35 @@
+{% extends 'core\base.html' %}
+{% block title %}Cat Breeds{% endblock title %}
+
+{% block content %}
+<div class="container-fluid" id="cats">
+    <div class="row d-flex justify-content-center">
+        <div class="col-10" style="max-height: 93dvh; overflow-y: auto;">
+                {% for cat in cats %} 
+                <div id="{[ cat.id ]}">
+                    <div class="card mb-3" style="max-width: 1140px;">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="{{ cat.cat_picture.url }}" alt="{{ cat.breed }} Picture" style="height: 400px; width: 400px; object-fit: cover;" class="img-fluid rounded-start">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">  
+                                    <div id="{{ cat.id }}">
+                                        <h2 class="card-title">{{ cat.breed }}</h2>
+                                        <p class="card-text">Description: {{ cat.description }}</p>
+                                        <p class="card-text">Traits: {{ cat.traits }}</p>
+                                        <p class="card-text">Height: {{ cat.height }}</p>
+                                        <p class="card-text">Weight: {{ cat.weight }}</p>
+                                        <p class="card-text">Population: {{ cat.population }}</p> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

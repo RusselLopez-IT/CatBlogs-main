@@ -1,0 +1,62 @@
+{% extends 'core\base.html' %}
+{% load static %}
+
+{% block title %}{{ article.title }}{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="container-fluid">
+        <img src="{{ article.thumbnails.url }}" alt="Thumbnail" style="width: 1250px; height: 500px; object-fit: scale-down;  background-color: rgb(163, 135, 88);">
+    </div>
+    <div class="container-fluid ps-5 mt-3">
+        <h1>{{ article.title }}</h1>
+    </div>
+    <div class="container-fluid mb-4 ps-5">
+        <span>Author: {{ article.author.username }} |</span>
+        <span>Date Published: {{ article.date_published }}</span>
+    </div>
+    <div class="line mb-4" style="width: 87dvw; height: 1px; border-bottom: 1px solid black;"></div>
+
+    <div class="container px-5" name="introduction">
+        <p style="font-size: larger; text-align: justify; text-indent: 60px;">{{ article.introduction }}</p>
+    </div>
+    <div class="container px-5" name="main_content">
+        <p style="font-size: larger; text-align: justify; text-indent: 60px;">{{ article.main_content }}</p>
+    </div>
+    <div class="line mb-4 mt-4" style="width: 87dvw; height: 1px; border-bottom: 1px solid black;"></div>
+</div>    
+<div class="container mb-5">
+     <form id="like-form" method="post" data-url="{% url 'like_article' article_id=article.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn mb-4" id="like-btn" style="background-color: rgb(207, 106, 88); color: white;">Like</button>
+    </form>    
+    
+    <h4>Write A Comment</h4>
+    <form id="comment-form" data-url="{% url 'add_comment' article_id=article.id %}" method="post">
+        {% csrf_token %}
+        <textarea id="comment-content" name="content" style="width: 1280px; height: 80px;"></textarea>
+        <button type="button" id="submit-comment" class="btn btn-primary">Submit Comment</button>
+    </form>
+    <div class="container mb-5 comments-section">
+        <h3 class="mt-5 mb-4">Comments</h3>
+        {% for comment in comments %}
+            <div class="card" style="height: 110px; padding-top: 15px;">
+                <div class="row">
+                    <div class="col-1 d-flex justify-content-center pe-0 pt-1">
+                        <img class="img" src="{{ comment.user.profile_picture.url }}" alt="{{ comment.user.username }}" style="height: 70px; width: 70px; object-fit: cover; border-radius: 50%;">
+                    </div>
+                    <div class="col-11 ps-0">
+                        <span><strong style="font-size: larger;">{{ comment.user.username }}</strong></span>
+                        <p class="m-0">{{ comment.content }}</p>
+                        <span><small>{{ comment.timestamp }}</small></span>
+                    </div>
+                </div>
+            </div>            
+        {% empty %}
+            <div class="d-flex justify-content-center">
+                <p>No comments yet.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

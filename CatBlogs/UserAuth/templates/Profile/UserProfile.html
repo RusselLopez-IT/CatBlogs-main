@@ -1,0 +1,66 @@
+{% extends 'core\base.html' %}
+{% load static %}
+
+{% block title %}{{ request.user.username }}{% endblock title %}
+
+{% block content %}
+<div class="row py-3 px-0">
+    <div class="col-md-5 mx-auto"><div class="bg-white shadow rounded overflow-hidden"> 
+        <div class="px-4 pt-0 pb-4 cover"> 
+            <div class="media align-items-end profile-head"> 
+                <div class="profile mr-3 mt-4">
+                    <img src="{{request.user.profile_picture.url}}" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                </div> 
+                <div class="media-body text-white"> 
+                    <h4 class="mt-0 mb-0" style="color: black;">{{ request.user.username }} <small class="fw-light">{{ request.user.first_name }} {{ request.user.last_name }}</small></h4> 
+                    <p class="small mb-4" style="color: black;"><i class="fas fa-map-marker-alt mr-2"></i>  {{ request.user.address}}</p> 
+                </div>
+            </div> 
+        </div>  
+        <div class="px-4 py-3"> 
+            <h5 class="mb-0">About</h5> 
+            <div class="p-4 rounded shadow-sm bg-light"> 
+                <p class="font-italic mb-0">{{ request.user.email }}</p> 
+                <p class="font-italic mb-0">{{ request.user.first_name }} {{ request.user.last_name }}</p> 
+                <p class="font-italic mb-0">{{ request.user.address }}</p>
+                <p class="font-italic mb-0">
+                    {% if request.user.sex == 'M' %}
+                        <span>Male</span>
+                    {% elif request.user.sex == 'F' %}
+                        <span>Female</span>
+                    {% elif request.user.sex == 'O' %}
+                        <span>Other</span>
+                    {% endif %}
+                    
+                </p> 
+            </div> 
+        </div> 
+        <div class="py-4 px-4 mb-4"> 
+            <div class="d-flex align-items-center justify-content-between mb-3"> 
+                <h5 class="mb-0">Your Blogs</h5>
+                <a href="{% url 'create_article' %}" class="btn btn-link text-muted">Create New</a> 
+            </div> 
+            <div class="row"> 
+                <div class="container-fluid">
+                    {% for blogs in articles %}
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="{{ blogs.thumbnails }}" class="img-fluid rounded-start" alt="..." style="height: 150px; width: 150px; object-fit: cover;">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <span><strong style="font-size: larger;">{{ blogs.title }}</strong></span>
+                                    <p class="m-0">{{ blogs.date_published }}</p>
+                                    <span><small>{{ blogs.introduction|truncatechars:60}}</small></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div> 
+            </div> 
+        </div> 
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'core\base.html' %}
+{% block title %}Cat Blogs{% endblock title %}
+
+{% block content %}
+<div class="container-fluid" id="cats">
+    <div class="row d-flex justify-content-center">
+            <div class="row row-cols-3">
+                {% for blogs in blogs %} 
+                    <div class="col" id="{[ blogs.id ]}">
+                        <div class="card mb-4">
+                            <div class="card-img-top">
+                                <img src="{{ blogs.thumbnails.url }}" alt="" style="width: 383px; height: 300px; object-fit: cover;">
+                            </div>
+                            <div class="card-body">
+                                <div class="col-10">
+                                    <article>
+                                        <a href="{% url 'article_detail' article_id=blogs.id %}" style="text-decoration: none; color: #000;"><h3>{{ blogs.title }}</h3></a>   
+                                        <span style="font-style: italic;">{{ blogs.author }} | {{ blogs.date_published }}</span>
+                                        <p>{{ blogs.introduction|truncatechars:20 }}</p>
+                                    </article>
+                                </div>
+                                
+                                <div class="col d-flex align-items-start flex-row mt-4">
+                                    <div class="me-4">
+                                        <i class="fa-solid fa-heart fa-beat fa-2xl" style="color: #d30d0d;"></i>
+                                        <span>{{ blogs.num_likes}}</span>
+                                    </div>
+                                    <div>
+                                        <i class="fa-solid fa-comment fa-shake fa-2xl" style="color: #a73d05;"></i>
+                                        <span>{{ blogs.num_comments }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+    </div>
+</div>
+
+{% endblock %}

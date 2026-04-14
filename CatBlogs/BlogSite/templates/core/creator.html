@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'images\page_images\paw-solid.png' %}">    
+    <title>{% block title %}{% endblock title %} | Create</title>
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+    <header>
+        <nav class="navbar mb-3">
+            <div id="navbar" class="container">
+                <a class="navbar-brand" href="{% url 'index' %}"><strong style="color: #a73d05;">Cat Blog</strong><i class="fa-solid fa-paw ms-2" style="color: #a73d05;"></i> | {% block header %}{% endblock %}</a>
+                <ul class="nav">
+                    <a href="#" style="color: #000; text-decoration: none;">
+                        <li class="me-3">Cats</li>
+                    </a>
+                    <a href="#" style="color: #000; text-decoration: none;">
+                        <li class="me-3">Blogs</li>
+                    </a>
+                    {% if request.user.is_authenticated and request.user.is_staff == False %}
+                    <li>
+                        <a href="{% url 'profile' %}"  style="text-decoration: none;"><i class="fa-solid fa-user" style="color: #a73d05;"></i></a>                    
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{% url 'loginUser' %}" style="text-decoration: none;"><span style="color: #a73d05;">Sign In</span></a>                
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    {% block content %}
+    {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <footer class="pt-5" style="height:100dvh; background-color: #a73d05; color: white;">
+        <div id="footer_title" class="container text-center">
+            <h3 class="mb-5"><strong>Cat Blog</strong></h3>
+        </div>
+        <div id="footer_content" class="container">
+            <div class="row" id="footer_content_row">
+                <div class="col " id="contact_ul">
+                    <h5>Contact Information:</h5>
+                        <p class="mb-0">catblogsite@email.com</p>
+                        <p class="mb-0">+63 987 4564 123</p>
+                        <p class="mb-0">123 Bulsu Street,</p>
+                        <p class="mb-0">Iba, Hagonoy,</p>
+                        <p class="mb-0">Bulacan</p>
+                </div> 
+                <div class="col">
+                    <h5>Authors:</h5>
+                    <ul class="mb-0">
+                        <li>Kim Dayao</li>
+                    </ul>
+                    <ul>
+                        <li>Christine Joy </li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h5>Welcome, </h5>
+                    <p style="text-align: justify; text-indent: 30px;">
+                        Welcome to our cat blog—a hub for educational insights born from our academic pursuits. Here, we distill school-learned expertise into a resource illuminating cat behavior, health, and care.
+                    </p>
+                    <p style="text-align: justify; text-indent: 30px;">
+                        Thank you for joining us on this journey of feline discovery and enrichment. Your support fuels our passion for sharing knowledge about our beloved companions.
+                    </p>
+                </div>
+            </div>        
+        </div>
+    </footer>
+</body>
+</html>

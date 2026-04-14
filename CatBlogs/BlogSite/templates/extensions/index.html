@@ -1,0 +1,136 @@
+{% extends 'core\base.html' %}
+{% load static %}
+{% load tz %}
+
+{% block title %}Welcome{% endblock title %}
+
+{% block content %}
+<div class="container d-flex justify-content-center" style="width: 1000px; height: 97dvh; position: relative;">
+    <div class="small-circle">
+    </div>
+    <div class="medium-circle">
+    </div> 
+    <div class="half-circle">
+    </div>
+    <img src="{% static 'images\page_images\Cat6.png' %}" alt="cat" style="height: 97dvh; position: absolute; z-index: 10;">
+</div>
+<div class="container-fluid d-flex justify-content-center" id="main_content" style="padding:90px; padding-top: 80px; height: 550px; background: rgb(232,92,19);
+background: radial-gradient(circle, rgba(232,92,19,1) 0%, rgba(167,61,5,1) 77%, rgba(133,51,8,1) 100%);; z-index: -1;">
+    <div class="container-fluid ms-0" style="width: 300px;">
+        <img src="{% static 'images\page_images\Cat8.png' %}" alt="" style="position: absolute; top: 93.3%; right: 64%; height: 650px; z-index: 1;">         
+        <h2 style="color: aliceblue; z-index: 5; position: relative; font-size: 20pt;">Learn more about these wonderful, <br>fluffy, beautiful <br>creatures.</h2>
+    </div>
+    <div class="row d-flex">
+        {% for cat in cats %}
+            <div class="card me-2 px-0" style="width: 250px;">
+                <img src="{{ cat.cat_picture }}" class="card-img-top" alt="" style="height: 260px; width: 249px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title text-center" style="font-size: medium;">{{ cat.breed }}</h5>
+                    <p>{{ cat.description|truncatechars:40 }}</p>
+                    <a href="{% url 'cat_detail' cat.id %}" class="p-2" style="text-decoration: none; color: #a73d05;"><span>Learn More..</span></a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="row d-flex justify-content-center text-center" style="height: 70px; background-color: #a73d05;">
+    <a href="{% url 'cats' %}" style="text-decoration:none; color: aliceblue;"><h4 style="color: aliceblue;" class="pt-3">View More</h4></a>
+</div>
+<div class="container p-5">
+    
+    <div class="container" id="popular_section">
+        <div class="row d-flex mb-4">
+            <h2><strong>Popular Blog</strong></h2>
+        </div>
+        {% if top_blog %}
+        <div class="card">
+            <div class="row d-flex">
+                <img src="{{ top_blog.thumbnails.url }}" alt="" style="height: 400px; object-fit: cover;" class="mb-2">
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-10">
+                        <article>
+                            <a href="{% url 'article_detail' article_id=top_blog.id %}" style="text-decoration: none; color: #000;">
+                            <span style="font-style: italic;">{{ top_blog.author }} | {{ top_blog.date_published }}</span>
+                            <p>{{ top_blog.introduction|truncatechars:120 }}</p>
+                        </article>
+                    </div>
+                    <div class="col d-flex align-items-start flex-row mt-4" style="padding-left: 30px;">
+                        <div class="me-4">
+                            <i class="fa-solid fa-heart fa-beat fa-2xl" style="color: #d30d0d;"></i>
+                            <span>{{ top_blog.num_likes}}</span>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-comment fa-shake fa-2xl" style="color: #a84c1a;"></i>
+                            <span>{{ top_blog.num_comments }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        {% endif %}
+    </div>
+    <div class="container mt-5" id="recent_section">
+        <div class="row d-flex mb-3">
+            <h2><strong>Recent Blogs</strong></h2>
+        </div>
+        <div class="row row-cols-3 d-flex">
+            {% for recent in recent_blogs %}
+            <div class="col mb-4">
+                <div class="card">
+                    <div class="card-img-top">
+                        <img src="{{ recent.thumbnails.url }}" alt="" style="width: 383px; height: 300px; object-fit: cover;">
+                    </div>
+                    <div class="card-body">
+                        <div class="col-10">
+                            <article>
+                                <a href="{% url 'article_detail' article_id=recent.id %}" style="text-decoration: none; color: #000;"><h3>{{ recent.title }}</h3></a>   
+                                <span style="font-style: italic;">{{ recent.author }} | {{ recent.date_published }}</span>
+                                <p>{{ recent.introduction|truncatechars:120 }}</p>
+                            </article>
+                        </div>
+                        
+                        <div class="col d-flex align-items-start flex-row mt-4">
+                            <div class="me-4">
+                                <i class="fa-solid fa-heart fa-beat fa-2xl" style="color: #d30d0d;"></i>
+                                <span>{{ recent.num_likes}}</span>
+                            </div>
+                            <div>
+                                <i class="fa-solid fa-comment fa-shake fa-2xl" style="color: #a73d05;"></i>
+                                <span>{{ recent.num_comments }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<nav id="fixed_nav" class="fixed-top" style="display: none; background-color: aliceblue;">
+    <nav class="navbar">
+        <div id="navbar" class="container">
+            <a class="navbar-brand" href="{% url 'index' %}"><strong style="color: #a73d05;">Cat Blog</strong><i class="fa-solid fa-paw ms-2" style="color: #a73d05;"></i></a>
+            <ul class="nav">
+                <a href="#" style="color: #000; text-decoration: none;">
+                    <li class="me-3">Cats</li>
+                </a>
+                <a href="#" style="color: #000; text-decoration: none;">
+                    <li class="me-3">Blogs</li>
+                </a>
+                {% if request.user.is_authenticated %}
+                <li>
+                    <a href="{% url 'profile' %}"  style="text-decoration: none;"><i class="fa-solid fa-user" style="color: #a73d05;"></i></a>                    
+                </li>
+                {% else %}
+                <li>
+                    <a href="{% url 'loginUser' %}" style="text-decoration: none;"><span style="color: #a73d05;">Sign In</span></a>                
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</nav>
+
+{% endblock content %}

@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'images\page_images\paw-solid.png' %}">
+    <title>{% block title %}{% endblock title %} | Cat Blog Site</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body style="background: rgb(255,255,255); background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(224,226,233,1) 100%);">
+    <header>
+        <nav class="navbar">
+            <div id="navbar" class="container">
+                <a class="navbar-brand" href="{% url 'index' %}"><strong style="color: #a73d05;">Cat Blog</strong><i class="fa-solid fa-paw ms-2" style="color: #a73d05;"></i></a>
+                <ul class="nav">
+                    <a href="{% url "cats" %}" style="color: #000; text-decoration: none;">
+                        <li class="me-3">Cats</li>
+                    </a>
+                    <a href="{% url "blogs" %}" style="color: #000; text-decoration: none;">
+                        <li class="me-3">Blogs</li>
+                    </a>
+                    {% if request.user.is_authenticated and request.user.is_staff == False %}
+                    <li>
+                        <a href="{% url 'profile' %}"  style="text-decoration: none;"><i class="fa-solid fa-user" style="color: #a73d05;"></i></a>                    
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{% url 'loginUser' %}" style="text-decoration: none;"><span style="color: #a73d05;">Sign In</span></a>                
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+    {% block content %}
+      
+    {% endblock content %}
+    <footer class="pt-5" style="height:100dvh; background-color: #a73d05; color: white;">
+        <div id="footer_title" class="container text-center">
+            <h3 class="mb-5"><strong>Cat Blog</strong></h3>
+        </div>
+        <div id="footer_content" class="container">
+            <div class="row" id="footer_content_row">
+                <div class="col " id="contact_ul">
+                    <h5>Contact Information:</h5>
+                        <p class="mb-0">catblogsite@email.com</p>
+                        <p class="mb-0">+63 987 4564 123</p>
+                        <p class="mb-0">123 Bulsu Street,</p>
+                        <p class="mb-0">Iba, Hagonoy,</p>
+                        <p class="mb-0">Bulacan</p>
+                </div> 
+                <div class="col">
+                    <h5>Authors:</h5>
+                    <ul class="mb-0">
+                        <li>Kim Dayao</li>
+                    </ul>
+                    <ul>
+                        <li>Christine Joy </li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h5>Welcome, </h5>
+                    <p style="text-align: justify; text-indent: 30px;">
+                        Welcome to our cat blog—a hub for educational insights born from our academic pursuits. Here, we distill school-learned expertise into a resource illuminating cat behavior, health, and care.
+                    </p>
+                    <p style="text-align: justify; text-indent: 30px;">
+                        Thank you for joining us on this journey of feline discovery and enrichment. Your support fuels our passion for sharing knowledge about our beloved companions.
+                    </p>
+                </div>
+            </div>        
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        window.addEventListener('scroll', function() {
+            const mainContent = document.getElementById('main_content');
+            const nav = document.getElementById('fixed_nav');
+
+            const mainContentTop = mainContent.offsetTop;
+            const scrollPosition = window.scrollY;
+
+            if (scrollPosition >= mainContentTop) {
+                nav.style.display = 'block';
+            } else {
+                nav.style.display = 'none';
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#like-form').on('submit', function(event) {
+                event.preventDefault(); 
+        
+                var form = $(this);
+                var url = form.attr('data-url');
+        
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: form.serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#like-count').text(response.num_likes); 
+                        $('#like-btn').text(response.is_liked ? 'Unlike' : 'Like'); 
+                    },
+                    error: function(xhr, errmsg, err) {
+                    }
+                });
+            });
+        });
+        </script>
+        <script>
+            $(document).ready(function() {
+                $('#submit-comment').click(function(event) {
+                    event.preventDefault(); 
+                    
+                    var content = $('#comment-content').val();
+                    var url = $('#comment-form').data('url');
+                    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: {
+                            'content': content,
+                            'csrfmiddlewaretoken': csrfToken,
+                        },
+                        success: function(response) {
+                            var newComment = response.new_comment_html; 
+
+                            $('.comments-section').append(newComment);
+
+                            $('#comment-content').val('');
+                        },
+                        error: function(error) {
+                        }
+                    });
+                });
+            });
+        </script>        
+</body>
+</html>
